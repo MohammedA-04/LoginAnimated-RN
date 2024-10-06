@@ -1,14 +1,19 @@
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, Pressable } from 'react-native';
 import { useState } from 'react';
 import * as Progress from 'react-native-progress';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const LoginPage = () => {
   const [password, setPassword] = useState('');
+  const [seeState, setSeeState] = useState(true);
 
   const handlePasswordChange = (text) => {
     setPassword(text);
   };
+
+  const handleUnseeRequest = (text) => {
+    setSeeState(prevState => !prevState) // inverter
+  }
 
   // Add points for at least two numbers, uppercase, lowercase, and special characters
   const checks = [
@@ -38,13 +43,13 @@ const LoginPage = () => {
   const symbolsLen = checks[3].test((password)) >= 1 ? "#00FF00" : "#FF0000";
 
   // check for 2x numbers
-  const numbersLen = checks[0].test((password)) >= 1 ? '00FF00' : 'FF0000'
+  const numbersLen = checks[0].test((password)) >= 1 ? '#00FF00' : '#FF0000'
 
   // check 1x upper and 1x lower
-  const upperlowerLen = checks[1].test((password)) + checks[2].test((password)) >= 2 ? '00FF00' : 'FF0000'
+  const upperlowerLen = checks[1].test((password)) + checks[2].test((password)) >= 2 ? '#00FF00' : '#FF0000'
 
   // check len >= 8
-  const passwordLen = password.length >= 8 ? '00FF00' : 'FF0000'
+  const passwordLen = password.length >= 8 ? '#00FF00' : '#FF0000'
 
 
   // Determine color based on strength
@@ -63,60 +68,65 @@ const LoginPage = () => {
     return 'Very Good';
   };
 
-  return (
-    <View className="flex-1 justify-center items-center">
 
-      <View>
+  return (
+    <View className={`flex-1 items-center justify-center bg-black`}  >
+
+      {/* Username Input */}
+      <View className="p-4">
         <TextInput
           placeholder="Username"
+          className="bg-black border border-black p-2"
         />
       </View>
 
-      <View className="mx-2">
+      {/* Password Input */}
+      <View className="p-4">
         <TextInput
           placeholder="Password"
-          secureTextEntry
+          secureTextEntry={seeState}
           value={password}
           onChangeText={handlePasswordChange}
+          className="bg-black border border-black p-2"
         />
+        <Pressable className='bg-back rouned-lg' onPress={handleUnseeRequest}>
+          <AntDesign name={seeState ? "eye" : "eyeo"} size={20} color="black" />
+        </Pressable>
       </View>
 
-
-      {/* Dynamically change the progress bar color based on strength */}
-      <Progress.Bar
-        progress={progressValue}
-        width={200}
-        color={getColor()}
-      />
-
-      <Text style={{ color: getColor() }}>
-        Password Strength: {getLabel()}
-      </Text>
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8, borderColor: 'black' }}>
-        {/* Symbols */}
-        <AntDesign name="closecircleo" size={10} color={symbolsLen} />
-        <Text>1 or more special characters</Text>
+      <View>
+        <Progress.Bar
+          progress={progressValue}
+          width={200}
+          color={getColor()}
+        />
+        <Text style={{ color: getColor() }}>
+          Password Strength: {getLabel()}
+        </Text>
       </View>
 
-      <View className="flex-row items-center my-2">
-        {/* Numbers */}
-        <AntDesign name="closecircleo" size={10} color={numbersLen} />
-        <Text>At least 2 numbers</Text>
-      </View>
+      {/* Password Criteria */}
+      <View className="mt-8 space-y-4">
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <AntDesign name="closecircleo" size={20} color={symbolsLen} />
+          <Text className="ml-2">1 or more special characters</Text>
+        </View>
 
-      <View className="flex-row items-center my-4">
-        {/* UpperLower */}
-        <AntDesign name="closecircleo" size={10} color={upperlowerLen} />
-        <Text>At least one upper and lowercase</Text>
-      </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <AntDesign name="closecircleo" size={20} color={numbersLen} />
+          <Text className="ml-2">At least 2 numbers</Text>
+        </View>
 
-      <View className="flex-row items-center my-4">
-        {/* Len of password */}
-        <AntDesign name="closecircleo" size={10} color={passwordLen} />
-        <Text>minimum 8-15 Characters</Text>
-      </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <AntDesign name="closecircleo" size={20} color={upperlowerLen} />
+          <Text className="ml-2">At least one upper and lowercase</Text>
+        </View>
 
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <AntDesign name="closecircleo" size={20} color={passwordLen} />
+          <Text className="ml-2">Minimum 8-15 Characters</Text>
+        </View>
+      </View>
 
     </View>
   );
