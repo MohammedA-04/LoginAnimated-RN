@@ -70,43 +70,61 @@ const LoginPage = () => {
 
 
   return (
-    <View className={`flex-1 items-center justify-center bg-black`}  >
+    <View style={{ flex: '1', alignItems: 'center', justifyContent: 'center' }}>
 
       {/* Username Input */}
-      <View className="p-4">
+      <View style={{ marginLeft: 20, borderRadius: 10 }}>
+        <Text
+          style={{ fontSize: 8, padding: 5 }}
+        >Username</Text>
         <TextInput
-          placeholder="Username"
-          className="bg-black border border-black p-2"
+          style={{
+            backgroundColor: 'white', borderRadius: 10,
+            borderColor: 'black', borderWidth: 2, marginBottom: 10,
+            paddingRight: 40, paddingLeft: 5, paddingTop: 1, paddingBottom: 1
+          }}
         />
       </View>
 
       {/* Password Input */}
-      <View className="p-4">
-        <TextInput
-          placeholder="Password"
-          secureTextEntry={seeState}
-          value={password}
-          onChangeText={handlePasswordChange}
-          className="bg-black border border-black p-2"
-        />
-        <Pressable className='bg-back rouned-lg' onPress={handleUnseeRequest}>
-          <AntDesign name={seeState ? "eye" : "eyeo"} size={20} color="black" />
-        </Pressable>
+      <View style={{ marginLeft: 20, borderRadius: 10 }}>
+        <Text style={{ fontSize: 8, padding: 5 }}>Password</Text>
+
+        <View style={{ flexDirection: 'row' }}>
+          <TextInput
+            secureTextEntry={seeState}
+            value={password}
+            onChangeText={handlePasswordChange}
+            style={{
+              backgroundColor: 'white', borderRadius: 10,
+              borderColor: 'black', borderWidth: 2, marginBottom: 10,
+              paddingRight: 40, paddingLeft: 5, paddingTop: 1, paddingBottom: 1
+            }}
+          />
+
+          <Pressable
+            style={{ position: 'absolute', right: 10 }}
+            onPress={handleUnseeRequest}>
+            <AntDesign name={seeState ? "eye" : "eyeo"} size={20} color="black" />
+          </Pressable>
+        </View>
+
       </View>
 
-      <View>
+      <View style={{ marginLeft: 20, marginTop: 2 }}>
         <Progress.Bar
           progress={progressValue}
           width={200}
+          height={10}
           color={getColor()}
         />
-        <Text style={{ color: getColor() }}>
+        <Text style={{ color: getColor(), maerginTop: 10, fontSize: 8 }}>
           Password Strength: {getLabel()}
         </Text>
       </View>
 
       {/* Password Criteria */}
-      <View className="mt-8 space-y-4">
+      <View style={{ marginTop: 10, marginLeft: 60 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <AntDesign name="closecircleo" size={20} color={symbolsLen} />
           <Text className="ml-2">1 or more special characters</Text>
